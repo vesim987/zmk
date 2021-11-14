@@ -18,6 +18,7 @@ module.exports = {
       "features/underglow",
       "features/backlight",
       "features/battery",
+      "features/trackballs",
       "features/beta-testing",
     ],
     Behaviors: [
@@ -41,6 +42,7 @@ module.exports = {
       "behaviors/underglow",
       "behaviors/backlight",
       "behaviors/power",
+      "behaviors/trackball-pim447",
     ],
     Codes: [
       "codes/index",
