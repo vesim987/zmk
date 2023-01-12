@@ -1,0 +1,9 @@
+file_format: "1"
+id: bbq20kbd
+name: Solder Party BBQ20KBD
+type: board
+arch: arm
+outputs:
+  - usb
+url: https://www.solder.party/docs/bbq20kbd/
+exposes: [seeed_xiao]

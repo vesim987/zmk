@@ -1,0 +1,9 @@
+if BOARD_SOLDER_PARTY_BBQ20KBD
+
+config BOARD
+	default "bbq20kbd"
+
+config RP2_FLASH_W25Q080
+	default y
+
+endif # BOARD_SOLDER_PARTY_BBQ20KBD

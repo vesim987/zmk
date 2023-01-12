@@ -1,0 +1,6 @@
+# Copyright (c) 2023 ZMK contributors
+# SPDX-License-Identifier: Apache-2.0
+
+config BOARD_SOLDER_PARTY_BBQ20KBD
+	bool "Solder Party BBQ20KBD"
+	depends on SOC_RP2040
