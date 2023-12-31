@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: MIT
  */
 
+#include "zmk/endpoints_types.h"
 #include <zephyr/init.h>
 #include <zephyr/settings/settings.h>
 
@@ -221,7 +222,28 @@ int zmk_endpoints_send_mouse_report() {
 }
 #endif // IS_ENABLED(CONFIG_ZMK_MOUSE)
 
+int zmk_endpoints_send_layer_report() {
+    switch (current_instance.transport) {
+#if IS_ENABLED(CONFIG_ZMK_USB)
+    case ZMK_TRANSPORT_USB: {
+        int err = zmk_usb_hid_send_layer_report();
+        if (err) {
+            LOG_ERR("FAILED TO SEND OVER USB: %d", err);
+        }
+        return err;
+    }
+#endif /* IS_ENABLED(CONFIG_ZMK_USB) */
+    case ZMK_TRANSPORT_BLE: // TODO
+        break;
+    }
+
+    LOG_ERR("Unsupported endpoint transport %d", current_instance.transport);
+    return -ENOTSUP;
+}
+
 #if IS_ENABLED(CONFIG_SETTINGS)
+
+
 
 static int endpoints_handle_set(const char *name, size_t len, settings_read_cb read_cb,
                                 void *cb_arg) {

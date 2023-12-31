@@ -58,6 +58,7 @@
 #define ZMK_HID_REPORT_ID_LEDS 0x01
 #define ZMK_HID_REPORT_ID_CONSUMER 0x02
 #define ZMK_HID_REPORT_ID_MOUSE 0x03
+#define ZMK_HID_REPORT_ID_LAYER 0x04
 
 static const uint8_t zmk_hid_report_desc[] = {
     HID_USAGE_PAGE(HID_USAGE_GEN_DESKTOP),
@@ -175,6 +176,18 @@ static const uint8_t zmk_hid_report_desc[] = {
     HID_END_COLLECTION,
     HID_END_COLLECTION,
 #endif // IS_ENABLED(CONFIG_ZMK_MOUSE)
+
+    HID_USAGE_PAGE(HID_USAGE_GEN_DESKTOP),
+    HID_USAGE(HID_USAGE_GEN_DESKTOP_UNDEFINED),
+    HID_COLLECTION(HID_COLLECTION_APPLICATION),
+    HID_LOGICAL_MIN8(0x00),
+    HID_LOGICAL_MAX16(0xFF, 0x00),
+    HID_REPORT_ID(ZMK_HID_REPORT_ID_LAYER),
+    HID_REPORT_SIZE(8),
+    HID_REPORT_COUNT(1),
+    HID_USAGE(HID_USAGE_GEN_DESKTOP_UNDEFINED),
+    HID_INPUT(0x02),
+    HID_END_COLLECTION,
 };
 
 #if IS_ENABLED(CONFIG_ZMK_USB_BOOT)
@@ -252,6 +265,15 @@ struct zmk_hid_mouse_report {
 
 #endif // IS_ENABLED(CONFIG_ZMK_MOUSE)
 
+struct zmk_hid_layer_report_body {
+    uint8_t layer;
+} __packed;
+
+struct zmk_hid_layer_report {
+    uint8_t report_id;
+    struct zmk_hid_layer_report_body body;
+};
+
 zmk_mod_flags_t zmk_hid_get_explicit_mods();
 int zmk_hid_register_mod(zmk_mod_t modifier);
 int zmk_hid_unregister_mod(zmk_mod_t modifier);
@@ -286,6 +308,8 @@ int zmk_hid_mouse_buttons_release(zmk_mouse_button_flags_t buttons);
 void zmk_hid_mouse_clear();
 #endif // IS_ENABLED(CONFIG_ZMK_MOUSE)
 
+int zmk_hid_layer_set(uint8_t layer);
+
 struct zmk_hid_keyboard_report *zmk_hid_get_keyboard_report();
 struct zmk_hid_consumer_report *zmk_hid_get_consumer_report();
 
@@ -296,3 +320,5 @@ zmk_hid_boot_report_t *zmk_hid_get_boot_report();
 #if IS_ENABLED(CONFIG_ZMK_MOUSE)
 struct zmk_hid_mouse_report *zmk_hid_get_mouse_report();
 #endif // IS_ENABLED(CONFIG_ZMK_MOUSE)
+
+struct zmk_hid_layer_report *zmk_hid_get_layer_report();

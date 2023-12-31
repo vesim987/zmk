@@ -177,6 +177,11 @@ int zmk_usb_hid_send_mouse_report() {
 }
 #endif // IS_ENABLED(CONFIG_ZMK_MOUSE)
 
+int zmk_usb_hid_send_layer_report() {
+    struct zmk_hid_layer_report *report = zmk_hid_get_layer_report();
+    return zmk_usb_hid_send_report((uint8_t*)report, sizeof(*report));
+}
+
 static int zmk_usb_hid_init(const struct device *_arg) {
     hid_dev = device_get_binding("HID_0");
     if (hid_dev == NULL) {

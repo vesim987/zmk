@@ -15,6 +15,7 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/matrix.h>
 #include <zmk/sensors.h>
 #include <zmk/virtual_key_position.h>
+#include <zmk/endpoints.h>
 
 #include <zmk/ble.h>
 #if ZMK_BLE_IS_CENTRAL
@@ -90,6 +91,8 @@ static inline int set_layer_state(uint8_t layer, bool state) {
     // Don't send state changes unless there was an actual change
     if (old_state != _zmk_keymap_layer_state) {
         LOG_DBG("layer_changed: layer %d state %d", layer, state);
+        zmk_hid_layer_set(zmk_keymap_highest_layer_active());
+        zmk_endpoints_send_layer_report();
         ZMK_EVENT_RAISE(create_layer_state_changed(layer, state));
     }
 

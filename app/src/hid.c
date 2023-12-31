@@ -32,6 +32,9 @@ static struct zmk_hid_mouse_report mouse_report = {.report_id = ZMK_HID_REPORT_I
 
 #endif // IS_ENABLED(CONFIG_ZMK_MOUSE)
 
+static struct zmk_hid_layer_report layer_report= {.report_id = ZMK_HID_REPORT_ID_LAYER,
+                                                   .body = {.layer = 0}};
+
 // Keep track of how often a modifier was pressed.
 // Only release the modifier if the count is 0.
 static int explicit_modifier_counts[8] = {0, 0, 0, 0, 0, 0, 0, 0};
@@ -430,6 +433,11 @@ void zmk_hid_mouse_clear() { memset(&mouse_report.body, 0, sizeof(mouse_report.b
 
 #endif // IS_ENABLED(CONFIG_ZMK_MOUSE)
 
+int zmk_hid_layer_set(uint8_t layer) {
+    layer_report.body.layer = layer;
+    return 0;
+}
+
 struct zmk_hid_keyboard_report *zmk_hid_get_keyboard_report() {
     return &keyboard_report;
 }
@@ -445,3 +453,8 @@ struct zmk_hid_mouse_report *zmk_hid_get_mouse_report() {
 }
 
 #endif // IS_ENABLED(CONFIG_ZMK_MOUSE)
+
+struct zmk_hid_layer_report *zmk_hid_get_layer_report() {
+    return &layer_report;
+}
+
